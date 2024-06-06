@@ -1,34 +1,19 @@
 #include "binary_trees.h"
 
 /**
- * binary_tree_rotate_left -  a left rotation
- * @tree: Pointerroot
+ * binary_tree_delete - deletes an entire binary tree
  *
- * Return: Pointer  root
+ * @tree: pointer to the root node of the tree to delete
+ * If tree is NULL, do nothing
  */
-binary_tree_t *binary_tree_rotate_left(binary_tree_t *tree)
+
+void binary_tree_delete(binary_tree_t *tree)
 {
-	binary_tree_t *chl, *parent = tree;
+	if (tree == NULL)
+		return;
 
-	if (!tree)
-		return (NULL);
+	binary_tree_delete(tree->left);
+	binary_tree_delete(tree->right);
 
-	chl = parent->right;
-	if (!chl)
-		return (tree);
-
-	if (chl->left)
-		chl->left->parent = parent;
-
-	parent->right = chl->left;
-	chl->left = parent;
-	chl->parent = parent->parent;
-	parent->parent = chl;
-
-	if (chl->parent && chl->parent->left == parent)
-		chl->parent->left = chl;
-	else if (chl->parent)
-		chl->parent->right = chl;
-
-	return (chl);
+	free(tree);
 }
